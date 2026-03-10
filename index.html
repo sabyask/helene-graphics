@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>HELENE — 5-day cone (graphics only)</title>
+<style>
+  body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:1rem;background:#fff;color:#111}
+  .wrap{max-width:1200px;margin:0 auto}
+  h1{font-size:1.2rem;margin:0 0 .5rem}
+  .viewer{position:relative;text-align:center;border:1px solid #ddd;padding:.5rem;background:#fafafa}
+  img{max-width:100%;height:auto;display:block;margin:0 auto}
+  .controls{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem;flex-wrap:wrap}
+  button{padding:.4rem .6rem;border:1px solid #888;background:#fff;cursor:pointer}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin-top:.6rem;font-size:.9rem}
+  @media (max-width:540px){ .meta{flex-direction:column;gap:.5rem;align-items:flex-start} }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>HELENE — 5-day Forecast Track (graphics only)</h1>
+
+    <div class="viewer" role="region" aria-label="HELENE graphics viewer">
+      <img id="main" alt="HELENE 5-day cone graphic" src="" />
+      <div class="controls" aria-hidden="false">
+        <button id="prev">◀ Prev</button>
+        <button id="play">Play</button>
+        <button id="next">Next ▶</button>
+        <button id="download">Download</button>
+      </div>
+    </div>
+
+    <div class="meta">
+      <div>Credit: NOAA / NHC (public domain)</div>
+      <div><a id="sourceLink" href="#" target="_blank" rel="noopener">View original on NHC</a></div>
+    </div>
+  </div>
+
+<script>
+/* Put the filenames you saw in the page into this array.
+   If NHC images hotlinking works, use full NHC URLs (https://www.nhc.noaa.gov/archive/2024/graphics/AL092024/...)
+   Otherwise host them yourself and update URLs accordingly.
+*/
+const base = "https://www.nhc.noaa.gov/archive/2024/graphics/AL092024/"; // change if you host elsewhere
+const files = [
+  "AL092024_5day_cone_with_line_and_wind_1.png",
+  "AL092024_5day_cone_with_line_and_wind_1A.png",
+  "AL092024_5day_cone_with_line_and_wind_2.png",
+  "AL092024_5day_cone_with_line_and_wind_2A.png",
+  "AL092024_5day_cone_with_line_and_wind_3.png",
+  "AL092024_5day_cone_with_line_and_wind_3A.png",
+  "AL092024_5day_cone_with_line_and_wind_4.png",
+  "AL092024_5day_cone_with_line_and_wind_4A.png",
+  "AL092024_5day_cone_with_line_and_wind_5.png",
+  "AL092024_5day_cone_with_line_and_wind_5A.png",
+  "AL092024_5day_cone_with_line_and_wind_6.png",
+  "AL092024_5day_cone_with_line_and_wind_6A.png",
+  "AL092024_5day_cone_with_line_and_wind_7.png",
+  "AL092024_5day_cone_with_line_and_wind_7A.png",
+  "AL092024_5day_cone_with_line_and_wind_8.png",
+  "AL092024_5day_cone_with_line_and_wind_8A.png",
+  "AL092024_5day_cone_with_line_and_wind_9.png",
+  "AL092024_5day_cone_with_line_and_wind_9A.png",
+  "AL092024_5day_cone_with_line_and_wind_10.png",
+  "AL092024_5day_cone_with_line_and_wind_10A.png",
+  "AL092024_5day_cone_with_line_and_wind_11.png",
+  "AL092024_5day_cone_with_line_and_wind_11A.png",
+  "AL092024_5day_cone_with_line_and_wind_12.png",
+  "AL092024_5day_cone_with_line_and_wind_12A.png",
+  "AL092024_5day_cone_with_line_and_wind_13.png",
+  "AL092024_5day_cone_with_line_and_wind_13A.png",
+  "AL092024_5day_cone_with_line_and_wind_14.png",
+  "AL092024_5day_cone_with_line_and_wind_14A.png",
+  "AL092024_5day_cone_with_line_and_wind_15.png",
+  "AL092024_5day_cone_with_line_and_wind_15A.png",
+  "AL092024_5day_cone_with_line_and_wind_16.png",
+  "AL092024_5day_cone_with_line_and_wind_16A.png",
+  "AL092024_5day_cone_with_line_and_wind_17.png",
+  "AL092024_5day_cone_with_line_and_wind_17A.png"
+];
+
+let idx = 0;
+const img = document.getElementById('main');
+const prev = document.getElementById('prev');
+const next = document.getElementById('next');
+const play = document.getElementById('play');
+const download = document.getElementById('download');
+const sourceLink = document.getElementById('sourceLink');
+
+function srcFor(i){ return base + files[i]; }
+function show(i){
+  idx = (i + files.length) % files.length;
+  img.src = srcFor(idx);
+  img.alt = "HELENE graphic: " + files[idx];
+  sourceLink.href = srcFor(idx);
+  download.onclick = () => window.open(srcFor(idx), "_blank");
+}
+
+prev.onclick = ()=> show(idx-1);
+next.onclick = ()=> show(idx+1);
+
+let playing = false, timer = null;
+play.onclick = function(){
+  if(!playing){
+    playing = true; play.textContent = 'Pause';
+    timer = setInterval(()=> show(idx+1), 1800);
+  } else {
+    playing = false; play.textContent = 'Play';
+    clearInterval(timer);
+  }
+};
+
+show(0); // start on first image
+</script>
+</body>
+</html>
