@@ -4,34 +4,44 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>HELENE — 5-day cone</title>
+
 <style>
   :root{
-    --max-width:1100px;
+    --max-width:100%;   /* use full available width of the embed */
   }
 
-  body{
-    font-family:Arial, Helvetica, sans-serif;
+  /* remove page-level padding so the embed uses full available space */
+  html,body{
+    height:100%;
     margin:0;
-    padding:10px;
+    padding:0;
     background:#fff;
+    font-family:Arial, Helvetica, sans-serif;
   }
 
+  /* make wrapper fill the embed container */
   .wrap{
     max-width:var(--max-width);
-    margin:0 auto;
+    width:100%;
+    margin:0;
+    box-sizing:border-box;
+    padding:6px 0; /* small vertical breathing room only */
   }
 
   .viewer{
     border:1px solid #ddd;
     background:#fafafa;
     padding:6px;
+    box-sizing:border-box;
   }
 
+  /* frame takes full width of the wrapper */
   .frame{
     width:100%;
     height:auto;
   }
 
+  /* images scale to fill the frame width exactly */
   .frame img{
     width:100%;
     height:auto;
@@ -47,39 +57,37 @@
     justify-content:space-between;
     font-size:.85rem;
     margin-top:6px;
+    align-items:center;
   }
 
+  .meta a{ color:inherit; text-decoration:underline; }
+
   @media (max-width:600px){
-    :root{--max-width:95%}
+    :root{--max-width:100%}
   }
 </style>
 </head>
 
 <body>
-
 <div class="wrap">
+  <div class="viewer">
+    <div class="frame" id="frame"></div>
+  </div>
 
-<div class="viewer">
-  <div class="frame" id="frame"></div>
-</div>
-
-<div class="meta">
-  <div>Credit: NOAA / NHC (public domain)</div>
-  <div>
-    <a id="sourceLink" 
-       href="https://www.nhc.noaa.gov/archive/2024/HELENE_graphics.php?product=5day_cone_with_line_and_wind" 
-       target="_blank">
-       View original
-    </a>
+  <div class="meta">
+    <div>Credit: NOAA / NHC (public domain)</div>
+    <div>
+      <a id="sourceLink" 
+         href="https://www.nhc.noaa.gov/archive/2024/HELENE_graphics.php?product=5day_cone_with_line_and_wind" 
+         target="_blank" rel="noopener">
+         View original
+      </a>
+    </div>
   </div>
 </div>
 
-</div>
-
 <script>
-
 const base="https://www.nhc.noaa.gov/archive/2024/graphics/AL092024/";
-
 const files=[
 "AL092024_5day_cone_with_line_and_wind_1.png",
 "AL092024_5day_cone_with_line_and_wind_1A.png",
@@ -118,32 +126,27 @@ const files=[
 ];
 
 const frame=document.getElementById("frame");
-
 let imgs=[];
 
 files.forEach((f)=>{
   const img=document.createElement("img");
   img.src=base+f;
+  img.alt = "HELENE graphic";
   frame.appendChild(img);
   imgs.push(img);
 });
 
 let idx=0;
-
 function show(i){
   imgs.forEach(img=>img.classList.remove("show"));
   imgs[i].classList.add("show");
 }
-
 show(0);
 
 setInterval(()=>{
   idx=(idx+1)%imgs.length;
   show(idx);
 },900);
-
 </script>
-
 </body>
 </html>
-
